@@ -2,6 +2,7 @@ import { Observable, Subscriber } from 'rxjs';
 
 const emptyObservables = new Observable<string>( subscriber => {
   console.log('Observable executed');
+  subscriber.next('Alice');
 });
 
 console.log('Before subscribe');
