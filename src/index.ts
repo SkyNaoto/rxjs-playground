@@ -4,11 +4,22 @@ const emptyObservables = new Observable<string>( subscriber => {
   console.log('Observable executed');
   subscriber.next('Alice');
   subscriber.next('Ben');
-  setTimeout(()=> subscriber.next('Charlie'),2000);
+  setTimeout(()=> {
+    subscriber.next('Charlie');
+    subscriber.complete();
+  },2000);
+
+  return () =>{
+    console.log('Teardown');
+  }
+  
 });
 
 console.log('Before subscribe');
-emptyObservables.subscribe(value=>console.log('Subscription:',value));
+emptyObservables.subscribe({
+  next: value => console.log('Subscription:',value),
+  complete: () => console.log('Completed')
+});
 console.log('After subscribe');
 
 // const someObservable$ = new Observable<string>(subscriber => {
