@@ -8,10 +8,10 @@ const someObservable$ = new Observable<string>(subscriber => {
   // subscriber.complete();
 });
 
-const subscription = someObservable$.subscribe(value => console.log(value));
+console.log('Subscription 1 starts');
+someObservable$.subscribe(value => console.log('Subscription 1:',value));
 
-setTimeout(()=> {
-  console.log('Unsbscribe');
-  subscription.unsubscribe();
-},3000);
-
+setTimeout(()=>{
+  console.log('Subscription 2 starts');
+  someObservable$.subscribe(value => console.log('Subscription 2:',value));
+},1000);
