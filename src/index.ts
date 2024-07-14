@@ -1,26 +1,67 @@
-import {ajax} from "rxjs/ajax";
+import { Observable } from "rxjs";
 
-const ajax$ = ajax<any>('https://random-data-api.com/api/name/random_name');
 
-ajax$.subscribe(
-  data => console.log('sub 1:',data.response.first_name)
+const helloButton = document.querySelector('button#hello');
+
+
+const helloClick$ = new Observable<MouseEvent>(subscriber => {
+  helloButton.addEventListener('click', (event2: MouseEvent) => {
+    subscriber.next(event2);
+  });
+});
+
+
+// const helloClick$ = new Observable<MouseEvent>(subscriber => {
+//   helloButton.addEventListener('click', (event)=>{
+//     subscriber.next(event);
+//   });
+// });
+
+helloClick$.subscribe(
+  event3 => console.log('Sub 1: ',event3.type, event3.x, event3.y)
 );
 
 setTimeout(()=>{
-  ajax$.subscribe(data => console.log('sub 2:',data.response.first_name)
-)},1000)
-// ajax$.subscribe(
-//   data => console.log('sub 2:',data.response.first_name)
+  console.log('Subscription2 starts');
+  helloClick$.subscribe(
+    event3 => console.log('Sub 2: ',event3.type, event3.x, event3.y)
+  );
+  
+}  ,5000);
+
+// helloClick$.subscribe(
+//   event3 => console.log('Sub 2: ',event3.type, event3.x, event3.y)
 // );
 
-setTimeout(()=>{
-  ajax$.subscribe(data => console.log('sub 3:',data.response.first_name)
-)},3000)
+
+
+
+
+
+
+// import {ajax} from "rxjs/ajax";
+
+// const ajax$ = ajax<any>('https://random-data-api.com/api/name/random_name');
+
 // ajax$.subscribe(
-//   data => console.log('sub 3:',data.response.first_name)
+//   data => console.log('sub 1:',data.response.first_name)
 // );
 
-// timeout なしで連続してAPIでHTTPリクエストを送信すると、過度なリクエストとしてサーバーがエラーを返してきたので、時間を遅らせて送信するとうまくいった。
+// setTimeout(()=>{
+//   ajax$.subscribe(data => console.log('sub 2:',data.response.first_name)
+// )},1000)
+// // ajax$.subscribe(
+// //   data => console.log('sub 2:',data.response.first_name)
+// // );
+
+// setTimeout(()=>{
+//   ajax$.subscribe(data => console.log('sub 3:',data.response.first_name)
+// )},3000)
+// // ajax$.subscribe(
+// //   data => console.log('sub 3:',data.response.first_name)
+// // );
+
+// // timeout なしで連続してAPIでHTTPリクエストを送信すると、過度なリクエストとしてサーバーがエラーを返してきたので、時間を遅らせて送信するとうまくいった。
 
 
 
