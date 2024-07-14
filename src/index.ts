@@ -1,28 +1,59 @@
-import { Observable, Subscriber } from "rxjs";
+import {ajax} from "rxjs/ajax";
 
-const interval = new Observable<number>( Subscriber =>{
-  let counter = 1;
-  console.log('Observable exectuted');
-  const intervalId = setInterval(()=>{
-    console.log('Emitted',counter);
-    Subscriber.next(counter++);
-  },2000);
+const ajax$ = ajax<any>('https://random-data-api.com/api/name/random_name');
 
-  return ()=>{
-    clearInterval(intervalId);
-  };
-
-});
-
-console.log('before subscribe');
-const subscription = interval.subscribe({
-  next: value => console.log('Subscription:',value)
-});
+ajax$.subscribe(
+  data => console.log('sub 1:',data.response.first_name)
+);
 
 setTimeout(()=>{
-  console.log('Unsbscribe');
-  subscription.unsubscribe();
-},7000)
+  ajax$.subscribe(data => console.log('sub 2:',data.response.first_name)
+)},1000)
+// ajax$.subscribe(
+//   data => console.log('sub 2:',data.response.first_name)
+// );
+
+setTimeout(()=>{
+  ajax$.subscribe(data => console.log('sub 3:',data.response.first_name)
+)},3000)
+// ajax$.subscribe(
+//   data => console.log('sub 3:',data.response.first_name)
+// );
+
+// timeout なしで連続してAPIでHTTPリクエストを送信すると、過度なリクエストとしてサーバーがエラーを返してきたので、時間を遅らせて送信するとうまくいった。
+
+
+
+
+
+
+
+
+// import { Observable, Subscriber } from "rxjs";
+
+// const interval = new Observable<number>( Subscriber =>{
+//   let counter = 1;
+//   console.log('Observable exectuted');
+//   const intervalId = setInterval(()=>{
+//     console.log('Emitted',counter);
+//     Subscriber.next(counter++);
+//   },2000);
+
+//   return ()=>{
+//     clearInterval(intervalId);
+//   };
+
+// });
+
+// console.log('before subscribe');
+// const subscription = interval.subscribe({
+//   next: value => console.log('Subscription:',value)
+// });
+
+// setTimeout(()=>{
+//   console.log('Unsbscribe');
+//   subscription.unsubscribe();
+// },7000)
 
 
 
