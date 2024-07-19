@@ -1,33 +1,84 @@
-import { Observable } from "rxjs";
+import {Observable, Subscriber, of} from "rxjs";
+
+// of('Alice','Ben','Chalie').subscribe({
+//   next: value => console.log(value),
+//   complete: ()=> console.log('Completed')
+// });
 
 
-const helloButton = document.querySelector('button#hello');
+// const name$= new Observable<string>(Subscriber => {
+//   Subscriber.next('Alice');
+//   Subscriber.next('Ben');
+//   Subscriber.next('Chalie');
+//   Subscriber.complete();
+// });
 
+// name$.subscribe({
+//   next: value => console.log(value),
+//   complete: () => console.log('Completed')
+// });
 
-const helloClick$ = new Observable<MouseEvent>(subscriber => {
-  helloButton.addEventListener('click', (event2: MouseEvent) => {
-    subscriber.next(event2);
-  });
+ourOwnOf('Alice','Ben','Chalie').subscribe({
+  next: value => console.log(value),
+  complete: ()=> console.log('Completed')
 });
 
 
+function ourOwnOf(...args: string[]): Observable<string>{
+  return new Observable<string>(Subscriber => {
+    for(let i=0; i< args.length; i++){
+      Subscriber.next(args[i]);
+    }
+    Subscriber.complete();
+  })
+}
+
+ourOwnOf2('Alice','test','mi').subscribe({
+  next: value => console.log(value),
+  complete: ()=> console.log('Completed')
+});
+
+function ourOwnOf2(...args2: string[]): Observable<string>{
+  return new Observable<string>(Subscriber=>{
+    for (let i=0; i< args2.length; i++){
+      Subscriber.next(args2[i]);
+    }
+    Subscriber.complete();
+  })
+}
+
+
+
+// import { Observable } from "rxjs";
+
+
+// const helloButton = document.querySelector('button#hello');
+
+
 // const helloClick$ = new Observable<MouseEvent>(subscriber => {
-//   helloButton.addEventListener('click', (event)=>{
-//     subscriber.next(event);
+//   helloButton.addEventListener('click', (event2: MouseEvent) => {
+//     subscriber.next(event2);
 //   });
 // });
 
-helloClick$.subscribe(
-  event3 => console.log('Sub 1: ',event3.type, event3.x, event3.y)
-);
 
-setTimeout(()=>{
-  console.log('Subscription2 starts');
-  helloClick$.subscribe(
-    event3 => console.log('Sub 2: ',event3.type, event3.x, event3.y)
-  );
+// // const helloClick$ = new Observable<MouseEvent>(subscriber => {
+// //   helloButton.addEventListener('click', (event)=>{
+// //     subscriber.next(event);
+// //   });
+// // });
+
+// helloClick$.subscribe(
+//   event3 => console.log('Sub 1: ',event3.type, event3.x, event3.y)
+// );
+
+// setTimeout(()=>{
+//   console.log('Subscription2 starts');
+//   helloClick$.subscribe(
+//     event3 => console.log('Sub 2: ',event3.type, event3.x, event3.y)
+//   );
   
-}  ,5000);
+// }  ,5000);
 
 // helloClick$.subscribe(
 //   event3 => console.log('Sub 2: ',event3.type, event3.x, event3.y)
