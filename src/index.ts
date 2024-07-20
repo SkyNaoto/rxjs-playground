@@ -1,25 +1,56 @@
-import {Observable, Subscriber, of} from "rxjs";
-import {from} from "rxjs";
+import {Observable, Subscriber, from, fromEvent} from "rxjs";
+
+const triggerButton = document.querySelector('button#trigger');
+
+// const subscription = fromEvent<MouseEvent>(triggerButton,'click').subscribe(
+//   event => console.log(event.type,event.x, event.y)
+// );
 
 
-const somePromise = new Promise((resolve, reject)=>{
-  
-  const success = false;
-  if (success){
-    resolve('Resolved!');
-  } else {
-    reject('Rejected!');
+
+const triggerClick$ = new Observable<MouseEvent>(Subscriber => {
+
+  const clickHandlerFn = (event:MouseEvent)=>{
+    console.log('Evnet calback executed');
+    Subscriber.next(event);
+  };
+
+
+
+  triggerButton.addEventListener('click',clickHandlerFn);
+
+  return () =>{
+    triggerButton.removeEventListener('click',clickHandlerFn);
   }
-  resolve('Resoved!')
 });
 
-const observableFromPromise$ = from(somePromise);
+const subscription = triggerClick$.subscribe(
+  event => console.log(event.type,event.x,event.y)
+);
 
-observableFromPromise$.subscribe({
-  next: value => console.log(value),
-  error: error => console.log(error),
-  complete: ()=> console.log('completed')
-});
+setTimeout(()=>{
+  console.log('Unsubscribe');
+  subscription.unsubscribe();
+},5000);
+
+// const somePromise = new Promise((resolve, reject)=>{
+  
+//   const success = false;
+//   if (success){
+//     resolve('Resolved!');
+//   } else {
+//     reject('Rejected!');
+//   }
+//   resolve('Resoved!')
+// });
+
+// const observableFromPromise$ = from(somePromise);
+
+// observableFromPromise$.subscribe({
+//   next: value => console.log(value),
+//   error: error => console.log(error),
+//   complete: ()=> console.log('completed')
+// });
 
 // const fetchData = new Promise((resolve1, reject2) =>{
 //   setTimeout(() =>{
