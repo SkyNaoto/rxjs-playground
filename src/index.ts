@@ -2,24 +2,43 @@ import {Observable, Subscriber, of} from "rxjs";
 import {from} from "rxjs";
 
 
-const fetchData = new Promise((resolve1, reject2) =>{
-  setTimeout(() =>{
-    const success = false;
-    if (success){
-      resolve1('データ取得成功');
-    } else {
-      reject2('データ取得失敗');
-    }
-  },2000);
+const somePromise = new Promise((resolve, reject)=>{
+  
+  const success = false;
+  if (success){
+    resolve('Resolved!');
+  } else {
+    reject('Rejected!');
+  }
+  resolve('Resoved!')
 });
 
-fetchData
-.then(data => {
-  console.log(data);
-})
-.catch(error =>{
-  console.log(error);
+const observableFromPromise$ = from(somePromise);
+
+observableFromPromise$.subscribe({
+  next: value => console.log(value),
+  error: error => console.log(error),
+  complete: ()=> console.log('completed')
 });
+
+// const fetchData = new Promise((resolve1, reject2) =>{
+//   setTimeout(() =>{
+//     const success = false;
+//     if (success){
+//       resolve1('データ取得成功');
+//     } else {
+//       reject2('データ取得失敗');
+//     }
+//   },2000);
+// });
+
+// fetchData
+// .then(data => {
+//   console.log(data);
+// })
+// .catch(error =>{
+//   console.log(error);
+// });
 
 
 
