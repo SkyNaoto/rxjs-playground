@@ -1,4 +1,43 @@
 import {Observable, Subscriber, of} from "rxjs";
+import {from} from "rxjs";
+
+
+const fetchData = new Promise((resolve1, reject2) =>{
+  setTimeout(() =>{
+    const success = false;
+    if (success){
+      resolve1('データ取得成功');
+    } else {
+      reject2('データ取得失敗');
+    }
+  },2000);
+});
+
+fetchData
+.then(data => {
+  console.log(data);
+})
+.catch(error =>{
+  console.log(error);
+});
+
+
+
+// from(['Alice','Ben','Charlie']).subscribe({
+//   next: value => console.log(value),
+//   complete: () => console.log("Completed")
+// });
+
+// const somePromise = new Promise((resolve, reject)=> {
+//   resolve('resolved!');
+// });
+
+// const observableFromPromise$ = from(somePromise);
+
+// observableFromPromise$.subscribe({
+//   next: value => console.log(value),
+//   complete: ()=> console.log("completed")
+// });
 
 // of('Alice','Ben','Chalie').subscribe({
 //   next: value => console.log(value),
@@ -18,34 +57,34 @@ import {Observable, Subscriber, of} from "rxjs";
 //   complete: () => console.log('Completed')
 // });
 
-ourOwnOf('Alice','Ben','Chalie').subscribe({
-  next: value => console.log(value),
-  complete: ()=> console.log('Completed')
-});
+// ourOwnOf('Alice','Ben','Chalie').subscribe({
+//   next: value => console.log(value),
+//   complete: ()=> console.log('Completed')
+// });
 
 
-function ourOwnOf(...args: string[]): Observable<string>{
-  return new Observable<string>(Subscriber => {
-    for(let i=0; i< args.length; i++){
-      Subscriber.next(args[i]);
-    }
-    Subscriber.complete();
-  })
-}
+// function ourOwnOf(...args: string[]): Observable<string>{
+//   return new Observable<string>(Subscriber => {
+//     for(let i=0; i< args.length; i++){
+//       Subscriber.next(args[i]);
+//     }
+//     Subscriber.complete();
+//   })
+// }
 
-ourOwnOf2('Alice','test','mi').subscribe({
-  next: value => console.log(value),
-  complete: ()=> console.log('Completed')
-});
+// ourOwnOf2('Alice','test','mi').subscribe({
+//   next: value => console.log(value),
+//   complete: ()=> console.log('Completed')
+// });
 
-function ourOwnOf2(...args2: string[]): Observable<string>{
-  return new Observable<string>(Subscriber=>{
-    for (let i=0; i< args2.length; i++){
-      Subscriber.next(args2[i]);
-    }
-    Subscriber.complete();
-  })
-}
+// function ourOwnOf2(...args2: string[]): Observable<string>{
+//   return new Observable<string>(Subscriber=>{
+//     for (let i=0; i< args2.length; i++){
+//       Subscriber.next(args2[i]);
+//     }
+//     Subscriber.complete();
+//   })
+// }
 
 
 
